@@ -70,10 +70,7 @@ class Home extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (builder) => Mapping()));
-                },
+                onTap: () {},
                 child: CustomCard(
                   icon: Icon(
                     Icons.info,
