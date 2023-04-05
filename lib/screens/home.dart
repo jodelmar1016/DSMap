@@ -3,6 +3,7 @@ import 'package:dsmap/screens/home.dart';
 import 'package:dsmap/screens/records.dart';
 import 'package:dsmap/screens/reportFAW.dart';
 import 'package:dsmap/screens/map.dart';
+import 'package:dsmap/screens/profile.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -20,7 +21,12 @@ class Home extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Profile()),
+                    );
+                  },
                   icon: Icon(
                     Icons.person,
                     size: 30,
