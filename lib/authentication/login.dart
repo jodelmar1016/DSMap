@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dsmap/screens/home.dart';
+import 'package:dsmap/authentication/register.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -29,7 +30,7 @@ class _LoginState extends State<Login> {
     Widget password = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40),
       child: TextFormField(
-        keyboardType: TextInputType.visiblePassword,
+        obscureText: true,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           prefixIcon: Icon(Icons.lock),
@@ -94,7 +95,14 @@ class _LoginState extends State<Login> {
                       children: [
                         Text('Don\'t have an account?'),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Register(),
+                                ),
+                              );
+                            },
                             child: Text(
                               'Register new',
                             ))
