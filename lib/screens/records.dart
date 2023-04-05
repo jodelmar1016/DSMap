@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:dsmap/screens/map.dart';
 
 class ListofRecords extends StatelessWidget {
   const ListofRecords({super.key});
@@ -16,9 +17,14 @@ class ListofRecords extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Mapping()),
+                  );
+                },
                 icon: Icon(
-                  Icons.person,
+                  Icons.map_outlined,
                   size: 30,
                 )),
           )
