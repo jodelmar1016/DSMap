@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dsmap/router.dart';
 import 'package:dsmap/screens/home.dart';
+import 'package:dsmap/authentication/login.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -20,7 +21,7 @@ class _SplashState extends State<Splash> {
     await Future.delayed(
       Duration(milliseconds: 1500),
       () {
-        Navigator.pushReplacement(context, MyPageRouter(page: Home()));
+        Navigator.pushReplacement(context, MyPageRouter(page: Login()));
       },
     );
   }
