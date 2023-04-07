@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dsmap/screens/home.dart';
+import 'package:dsmap/screens/user/home.dart';
 import 'package:dsmap/authentication/register.dart';
 
 class Login extends StatefulWidget {

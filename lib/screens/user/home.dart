@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:dsmap/screens/home.dart';
-import 'package:dsmap/screens/records.dart';
-import 'package:dsmap/screens/reportFAW.dart';
-import 'package:dsmap/screens/map.dart';
-import 'package:dsmap/screens/profile.dart';
+import 'package:dsmap/screens/user/home.dart';
+import 'package:dsmap/screens/user/records.dart';
+import 'package:dsmap/screens/user/reportFAW.dart';
+import 'package:dsmap/screens/user/map.dart';
+import 'package:dsmap/screens/user/profile.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});

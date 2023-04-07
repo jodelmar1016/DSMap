@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dsmap/router.dart';
-import 'package:dsmap/screens/home.dart';
+import 'package:dsmap/screens/user/home.dart';
 import 'package:dsmap/authentication/login.dart';
 
 class Splash extends StatefulWidget {
