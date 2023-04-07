@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "217509015802",
+    "project_id": "dsmap-f4aed",
+    "storage_bucket": "dsmap-f4aed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217509015802:android:16a4339dbbfb2c1db79943",
+        "android_client_info": {
+          "package_name": "com.dsmap.dsmap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217509015802-67jss56qi5oo72inrg4nn858ipibd3ru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnF4pOOELknkluj8vnpPmRWFDktuOG57s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217509015802-67jss56qi5oo72inrg4nn858ipibd3ru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
