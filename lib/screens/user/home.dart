@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:dsmap/screens/user/home.dart';
 import 'package:dsmap/screens/user/records.dart';
-import 'package:dsmap/screens/user/reportFAW.dart';
+// import 'package:dsmap/screens/user/reportFAW.dart';
+import 'package:dsmap/screens/user/testRecords.dart';
+import 'package:dsmap/screens/user/testReport.dart';
 import 'package:dsmap/screens/user/map.dart';
 import 'package:dsmap/screens/user/profile.dart';
 
@@ -44,7 +46,7 @@ class Home extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ReportFAW(),
+                      builder: (context) => ReportForm(),
                     ),
                   );
                 },
@@ -62,7 +64,7 @@ class Home extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ListofRecords(),
+                      builder: (context) => ReportListScreen(),
                     ),
                   );
                 },
