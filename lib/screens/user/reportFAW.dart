@@ -13,25 +13,45 @@ class ReportForm extends StatefulWidget {
 
 class _ReportFormState extends State<ReportForm> {
   final _formKey = GlobalKey<FormState>();
-  final _barangayController = TextEditingController();
   final _messageController = TextEditingController();
   List<File> _imageList = [];
   bool _isLoading = false;
 
+  String selectedItem = 'Barangay';
+  List<String> dropdownItems = [
+    'Apayao',
+    'Aquib',
+    'Baung',
+    'Calaoagan',
+    'Catarauan',
+    'Dugayung',
+    'Gumarueng',
+    'Macapil',
+    'Maguilling',
+    'Minanga',
+    'Poblacion I',
+    'Poblacion II',
+    'Santa Barbara',
+    'Santo Domingo',
+    'Sicatna',
+    'Villa Rey (San Gaspar)',
+    'Villa Reyno',
+    'Warat'
+  ];
+
   @override
   void dispose() {
-    _barangayController.dispose();
     _messageController.dispose();
     super.dispose();
   }
 
-  Future<void> _uploadImages() async {
+  Future<void> _submit() async {
     setState(() {
       _isLoading = true;
     });
 
     Response result = await DataService.addReport(
-      barangay: _barangayController.text,
+      barangay: selectedItem,
       message: _messageController.text,
       imageList: _imageList,
     );
@@ -49,7 +69,6 @@ class _ReportFormState extends State<ReportForm> {
     setState(() {
       _isLoading = false;
       _imageList = [];
-      _barangayController.text = '';
       _messageController.text = '';
     });
   }
@@ -71,6 +90,42 @@ class _ReportFormState extends State<ReportForm> {
 
   @override
   Widget build(BuildContext context) {
+    // SELECT BARANGAY
+    final Widget barangay = DropdownButtonFormField<String>(
+      value: selectedItem == 'Barangay' ? null : selectedItem,
+      onChanged: (String? newValue) {
+        setState(() {
+          selectedItem = newValue!;
+        });
+      },
+      items: dropdownItems.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      hint: Text(selectedItem),
+      validator: (value) {
+        if (value == null) {
+          return 'Please select an option';
+        }
+        return null;
+      },
+    );
+    // MESSAGE
+    final Widget message = TextFormField(
+      controller: _messageController,
+      decoration:
+          InputDecoration(labelText: 'Message', hintText: 'Enter your message'),
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please enter a message';
+        }
+        return null;
+      },
+    );
     return Scaffold(
       appBar: AppBar(title: Text('Report Form')),
       body: Padding(
@@ -80,30 +135,9 @@ class _ReportFormState extends State<ReportForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextFormField(
-                controller: _barangayController,
-                decoration: InputDecoration(labelText: 'Barangay'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a barangay';
-                  }
-                  return null;
-                },
-              ),
+              barangay,
               SizedBox(height: 16.0),
-              TextFormField(
-                controller: _messageController,
-                decoration: InputDecoration(
-                    labelText: 'Message', hintText: 'Enter your message'),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a message';
-                  }
-                  return null;
-                },
-              ),
+              message,
               SizedBox(height: 16.0),
               Text('Upload Images'),
               SizedBox(height: 8.0),
@@ -155,15 +189,18 @@ class _ReportFormState extends State<ReportForm> {
               ),
               SizedBox(height: 16.0),
               _isLoading
-                  ? CircularProgressIndicator()
+                  ? Center(child: CircularProgressIndicator())
                   : Row(
                       children: [
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                _uploadImages();
+                                _submit();
                               }
+                              Future.delayed(Duration(milliseconds: 2500), () {
+                                Navigator.pop(context);
+                              });
                             },
                             child: Text('Submit'),
                           ),
