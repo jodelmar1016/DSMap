@@ -1,101 +1,179 @@
+import 'dart:io';
+import 'package:dsmap/models/response.dart';
+import 'package:dsmap/services/dataService.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ReportFAW extends StatelessWidget {
-  const ReportFAW({super.key});
+class ReportForm extends StatefulWidget {
+  @override
+  _ReportFormState createState() => _ReportFormState();
+}
+
+class _ReportFormState extends State<ReportForm> {
+  final _formKey = GlobalKey<FormState>();
+  final _barangayController = TextEditingController();
+  final _messageController = TextEditingController();
+  List<File> _imageList = [];
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _barangayController.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _uploadImages() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    Response result = await DataService.addReport(
+      barangay: _barangayController.text,
+      message: _messageController.text,
+      imageList: _imageList,
+    );
+
+    if (result.code == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Report submitted!')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result.message.toString())),
+      );
+    }
+
+    setState(() {
+      _isLoading = false;
+      _imageList = [];
+      _barangayController.text = '';
+      _messageController.text = '';
+    });
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _imageList.add(File(pickedFile.path));
+      });
+    }
+  }
+
+  void _removeImage(int index) {
+    setState(() {
+      _imageList.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'DISMAP',
-          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.person,
-                  size: 30,
-                )),
-          )
-        ],
-      ),
-      body: Center(
-          child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      'Report FAW',
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Barangay',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Date',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    TextFormField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        labelText: 'Message',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.camera_alt_outlined),
-                          SizedBox(width: 10),
-                          Text('Upload Image'),
-                        ],
-                      ),
-                    )
-                  ],
+      appBar: AppBar(title: Text('Report Form')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextFormField(
+                controller: _barangayController,
+                decoration: InputDecoration(labelText: 'Barangay'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a barangay';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: _messageController,
+                decoration: InputDecoration(
+                    labelText: 'Message', hintText: 'Enter your message'),
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a message';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16.0),
+              Text('Upload Images'),
+              SizedBox(height: 8.0),
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.camera_alt),
+                    onPressed: () => _pickImage(ImageSource.camera),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.photo_library),
+                    onPressed: () => _pickImage(ImageSource.gallery),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: GridView.builder(
+                  itemCount: _imageList.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Stack(
+                      children: [
+                        Image.file(
+                          _imageList[index],
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          top: 4,
+                          right: 4,
+                          child: GestureDetector(
+                            onTap: () => _removeImage(index),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: Icon(Icons.close, size: 16.0),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size.fromHeight(40),
-                  ),
-                  child: Text(
-                    'Submit',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                )
-              ],
-            ),
+              ),
+              SizedBox(height: 16.0),
+              _isLoading
+                  ? CircularProgressIndicator()
+                  : Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _uploadImages();
+                              }
+                            },
+                            child: Text('Submit'),
+                          ),
+                        ),
+                      ],
+                    ),
+            ],
           ),
         ),
-      )),
+      ),
     );
   }
 }
