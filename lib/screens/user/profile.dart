@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:dsmap/authentication/login.dart';
+import 'package:dsmap/services/auth.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  final AuthService auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +61,7 @@ class Profile extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * .7,
                   child: ElevatedButton(
                     onPressed: () {
+                      auth.signOut();
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => Login()),
