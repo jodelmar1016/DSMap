@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:dsmap/models/response.dart';
 import 'package:dsmap/services/dataService.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dsmap/screens/selectLocation.dart';
 
 class ReportForm extends StatefulWidget {
   @override
@@ -16,6 +18,28 @@ class _ReportFormState extends State<ReportForm> {
   final _messageController = TextEditingController();
   List<File> _imageList = [];
   bool _isLoading = false;
+  LatLng? pin;
+
+  Map<String, LatLng> getLatLng = {
+    'Apayao': LatLng(17.843480642720923, 121.50629851199854),
+    'Aquib': LatLng(17.805976, 121.478594),
+    'Baung': LatLng(17.803155, 121.501503),
+    'Calaogan': LatLng(17.843042, 121.509428),
+    'Catarauan': LatLng(17.754528, 121.591602),
+    'Dugayung': LatLng(17.819988, 121.473852),
+    'Gumarueng': LatLng(17.779211, 121.450601),
+    'Macapil': LatLng(17.777959, 121.472010),
+    'Maguilling': LatLng(17.773462, 121.528849),
+    'Minanga': LatLng(17.829602, 121.493502),
+    'Poblacion I': LatLng(17.788380, 121.488005),
+    'Poblacion II': LatLng(17.792602, 121.475385),
+    'Santa Barbara': LatLng(17.756120, 121.493664),
+    'Santo Domingo': LatLng(17.745345, 121.511198),
+    'Sicatna': LatLng(17.841485, 121.484744),
+    'Villa Rey (San Gaspar)': LatLng(17.818621, 121.511548),
+    'Villa Reyno': LatLng(17.725258, 121.544932),
+    'Warat': LatLng(17.711701, 121.577780),
+  };
 
   String selectedItem = 'Barangay';
   List<String> dropdownItems = [
@@ -88,6 +112,41 @@ class _ReportFormState extends State<ReportForm> {
     });
   }
 
+  void _pinLocation() async {
+    try {
+      LatLng center = getLatLng[selectedItem]!;
+      final selectedLatLng = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SelectLocation(place: center)),
+      );
+
+      if (selectedLatLng != null) {
+        setState(() {
+          pin = selectedLatLng;
+        });
+      }
+    } catch (e) {
+      print(e);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Please Select Barangay'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Ok'),
+              )
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // SELECT BARANGAY
@@ -112,6 +171,7 @@ class _ReportFormState extends State<ReportForm> {
         return null;
       },
     );
+
     // MESSAGE
     final Widget message = TextFormField(
       controller: _messageController,
@@ -126,6 +186,7 @@ class _ReportFormState extends State<ReportForm> {
         return null;
       },
     );
+
     return Scaffold(
       appBar: AppBar(title: Text('Report Form')),
       body: Padding(
@@ -136,6 +197,12 @@ class _ReportFormState extends State<ReportForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               barangay,
+              TextButton(
+                onPressed: () {
+                  _pinLocation();
+                },
+                child: Text('Pin Location'),
+              ),
               SizedBox(height: 16.0),
               message,
               SizedBox(height: 16.0),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dsmap/router.dart';
-import 'package:dsmap/screens/user/home.dart';
+import 'package:dsmap/screens/home.dart';
 import 'package:dsmap/authentication/login.dart';
 
 class Splash extends StatefulWidget {
@@ -21,7 +21,7 @@ class _SplashState extends State<Splash> {
     await Future.delayed(
       Duration(milliseconds: 1500),
       () {
-        Navigator.pushReplacement(context, MyPageRouter(page: Login()));
+        Navigator.pushReplacement(context, MyPageRouter(page: Home()));
       },
     );
   }
@@ -52,16 +52,18 @@ class _SplashState extends State<Splash> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
               'assets/logo.png',
               fit: BoxFit.fill,
               width: 300,
+              color: Colors.green[700],
             ),
-            const Text(
-              'DSMap',
-              style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-            ),
+            // const Text(
+            //   'DSMap',
+            //   style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+            // ),
           ],
         ),
       ),

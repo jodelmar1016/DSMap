@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:dsmap/screens/user/map.dart';
+import 'package:dsmap/screens/map.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dsmap/services/dataService.dart';
 

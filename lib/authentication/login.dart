@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dsmap/screens/user/home.dart';
+import 'package:dsmap/screens/home.dart';
 import 'package:dsmap/authentication/register.dart';
 import 'package:dsmap/services/auth.dart';
 import 'package:dsmap/models/response.dart';
