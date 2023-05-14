@@ -13,11 +13,13 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: Image.asset('assets/logo.png'),
-          title: Text(
-            'DISMAP',
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+          backgroundColor: Colors.white,
+          title: Image.asset(
+            'assets/logo.png',
+            width: 150,
+            color: Colors.green[700],
           ),
+          elevation: 1,
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10),
@@ -31,12 +33,13 @@ class Home extends StatelessWidget {
                   icon: Icon(
                     Icons.person,
                     size: 30,
+                    color: Colors.green[700],
                   )),
             )
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 26),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -52,7 +55,7 @@ class Home extends StatelessWidget {
                 child: CustomCard(
                   icon: Icon(
                     Icons.scanner,
-                    color: Colors.greenAccent,
+                    color: Colors.white,
                     size: 50,
                   ),
                   title: 'Report FAW',
@@ -70,7 +73,7 @@ class Home extends StatelessWidget {
                 child: CustomCard(
                   icon: Icon(
                     Icons.track_changes,
-                    color: Colors.greenAccent,
+                    color: Colors.white,
                     size: 50,
                   ),
                   title: 'List of Records',
@@ -81,7 +84,7 @@ class Home extends StatelessWidget {
                 child: CustomCard(
                   icon: Icon(
                     Icons.info,
-                    color: Colors.greenAccent,
+                    color: Colors.white,
                     size: 50,
                   ),
                   title: 'About DISMAP',
@@ -105,10 +108,11 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      color: Colors.green[700],
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 50),
+        padding: const EdgeInsets.symmetric(vertical: 40),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -117,7 +121,7 @@ class CustomCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
                 '$title',
-                style: TextStyle(fontSize: 30),
+                style: TextStyle(fontSize: 30, color: Colors.white),
               ),
             )
           ],
