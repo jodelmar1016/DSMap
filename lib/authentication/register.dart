@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dsmap/authentication/login.dart';
-import 'package:dsmap/screens/user/home.dart';
+import 'package:dsmap/screens/home.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
