@@ -139,21 +139,22 @@ class _LoginState extends State<Login> {
             Form(
               key: _formKey,
               child: Padding(
-                padding: const EdgeInsets.only(top: 100),
+                padding: const EdgeInsets.only(top: 250),
                 child: Column(
                   children: [
                     Image.asset(
                       'assets/logo.png',
-                      width: 250,
+                      width: 320,
+                      color: Colors.green[700],
                     ),
-                    Text(
-                      'DSMAP',
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
+                    // Text(
+                    //   'DSMAP',
+                    //   style: TextStyle(
+                    //     fontSize: 40,
+                    //     fontWeight: FontWeight.bold,
+                    //     color: Colors.green,
+                    //   ),
+                    // ),
                     SizedBox(height: 70),
                     email,
                     SizedBox(height: 20),
