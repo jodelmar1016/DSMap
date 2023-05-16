@@ -23,7 +23,6 @@ class AuthService {
       await prefs.setString('userEmail', email);
       await prefs.setString('userName', snapshot['name']);
       await prefs.setString('userContact', snapshot['contact']);
-      await prefs.setString('userAddress', snapshot['address']);
 
       response.code = 200;
       response.message = 'Successfully Login';

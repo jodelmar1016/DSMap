@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dsmap/screens/selectLocation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReportForm extends StatefulWidget {
   @override
@@ -74,7 +75,10 @@ class _ReportFormState extends State<ReportForm> {
     setState(() {
       _isLoading = true;
     });
+    final prefs = await SharedPreferences.getInstance();
+    String? userId = await prefs.getString('userId');
     Response result = await DataService.addReport(
+      uid: userId!,
       pinLocation: pin!,
       barangay: selectedItem,
       message: _messageController.text,
