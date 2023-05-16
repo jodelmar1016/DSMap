@@ -58,6 +58,7 @@ class DataService {
     return notesItemCollection.snapshots();
   }
 
+  // This is for Map
   static Future<Set<Marker>> getAllReports() async {
     Set<Marker> markers = Set();
     QuerySnapshot snapshot = await _collection.get();
@@ -76,7 +77,6 @@ class DataService {
         ),
       );
     });
-    // print(markers.length);
 
     return markers;
   }
