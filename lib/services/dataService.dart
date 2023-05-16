@@ -54,8 +54,8 @@ class DataService {
   }
 
   // GET ALL REPORTS
-  static Stream<QuerySnapshot> readReports() {
-    CollectionReference notesItemCollection = _collection;
+  static Stream<QuerySnapshot> readReports(uid) {
+    Query notesItemCollection = _collection.where('userId', isEqualTo: uid);
 
     return notesItemCollection.snapshots();
   }
