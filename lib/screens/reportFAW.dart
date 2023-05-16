@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dsmap/models/response.dart';
 import 'package:dsmap/services/dataService.dart';
+import 'package:dsmap/services/request.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -73,8 +74,8 @@ class _ReportFormState extends State<ReportForm> {
     setState(() {
       _isLoading = true;
     });
-
     Response result = await DataService.addReport(
+      pinLocation: pin!,
       barangay: selectedItem,
       message: _messageController.text,
       imageList: _imageList,
@@ -265,9 +266,9 @@ class _ReportFormState extends State<ReportForm> {
                               if (_formKey.currentState!.validate()) {
                                 _submit();
                               }
-                              Future.delayed(Duration(milliseconds: 2500), () {
-                                Navigator.pop(context);
-                              });
+                              // Future.delayed(Duration(milliseconds: 2500), () {
+                              //   Navigator.pop(context);
+                              // });
                             },
                             child: Text('Submit'),
                           ),

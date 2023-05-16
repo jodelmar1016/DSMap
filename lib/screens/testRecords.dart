@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dsmap/screens/map.dart';
 
 class ReportListScreen extends StatefulWidget {
   @override
@@ -12,6 +13,20 @@ class _ReportListScreenState extends State<ReportListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Report List'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Mapping()),
+                );
+              },
+              icon: Icon(Icons.map),
+            ),
+          )
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('reports').snapshots(),
