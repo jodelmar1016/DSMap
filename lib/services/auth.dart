@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dsmap/models/response.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _collection = _firestore.collection('users');
@@ -13,8 +14,17 @@ class AuthService {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email.toString(), password: password.toString());
       User? user = userCredential.user;
-      // final prefs = await SharedPreferences.getInstance();
-      // await prefs.setString('uid', user!.uid);
+
+      DocumentSnapshot snapshot = await _collection.doc(user!.uid).get();
+
+      // Store User credentials
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('userId', user.uid);
+      await prefs.setString('userEmail', email);
+      await prefs.setString('userName', snapshot['name']);
+      await prefs.setString('userContact', snapshot['contact']);
+      await prefs.setString('userAddress', snapshot['address']);
+
       response.code = 200;
       response.message = 'Successfully Login';
       return response;
