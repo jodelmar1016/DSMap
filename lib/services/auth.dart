@@ -4,16 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _collection = _firestore.collection('users');
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   Future<Response> signInEmailPassword(String email, String password) async {
     Response response = new Response();
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: email.toString(), password: password.toString());
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: email.toString(), password: password.toString());
       User? user = userCredential.user;
       // final prefs = await SharedPreferences.getInstance();
       // await prefs.setString('uid', user!.uid);
@@ -35,8 +33,8 @@ class AuthService {
   ) async {
     Response response = new Response();
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
               email: email.toString(), password: password.toString());
 
       User user = userCredential.user!;
