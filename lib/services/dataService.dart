@@ -16,6 +16,7 @@ class DataService {
     required String message,
     required List<File> imageList,
     required LatLng pinLocation,
+    required String uid,
   }) async {
     Response response = Response();
     DocumentReference documentReferencer = _collection.doc();
@@ -38,6 +39,7 @@ class DataService {
       'barangay': barangay,
       'message': message,
       'images': imageURLs,
+      'userId': uid,
       'timestamp': FieldValue.serverTimestamp(),
     };
 
