@@ -40,6 +40,8 @@ class DataService {
       'message': message,
       'images': imageURLs,
       'userId': uid,
+      'confirmed': false,
+      'status': 'Infested',
       'timestamp': FieldValue.serverTimestamp(),
     };
 
@@ -60,10 +62,26 @@ class DataService {
     return notesItemCollection.snapshots();
   }
 
+  // Update status
+  static Future<bool> update(docId) async {
+    try {
+      await _collection.doc(docId).update({
+        'status': 'Clean',
+      });
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   // This is for Map
   static Future<Set<Marker>> getAllReports() async {
     Set<Marker> markers = Set();
-    QuerySnapshot snapshot = await _collection.get();
+    QuerySnapshot snapshot = await _collection
+        .where('confirmed', isEqualTo: true)
+        .where('status', isEqualTo: 'Infested')
+        .get();
 
     snapshot.docs.forEach((DocumentSnapshot doc) {
       markers.add(
