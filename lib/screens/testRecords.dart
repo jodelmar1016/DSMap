@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dsmap/screens/map.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dsmap/screens/details.dart';
 
 class ReportListScreen extends StatefulWidget {
   @override
@@ -69,6 +70,15 @@ class _ReportListScreenState extends State<ReportListScreen> {
                         final report = snapshot.data!.docs[index];
                         return Card(
                           child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      Details(data: snapshot.data!.docs[index]),
+                                ),
+                              );
+                            },
                             leading: Icon(Icons.info),
                             title: Text(report['barangay']),
                             subtitle: Text(report['message']),
