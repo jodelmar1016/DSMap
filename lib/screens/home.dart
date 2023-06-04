@@ -13,11 +13,11 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.green[700],
           title: Image.asset(
             'assets/logo.png',
             width: 150,
-            color: Colors.green[700],
+            color: Colors.white,
           ),
           elevation: 1,
           actions: [
@@ -33,7 +33,7 @@ class Home extends StatelessWidget {
                   icon: Icon(
                     Icons.person,
                     size: 30,
-                    color: Colors.green[700],
+                    color: Colors.white,
                   )),
             )
           ],
