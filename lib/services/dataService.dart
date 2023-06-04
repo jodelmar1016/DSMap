@@ -57,7 +57,9 @@ class DataService {
 
   // GET ALL REPORTS
   static Stream<QuerySnapshot> readReports(uid) {
-    Query notesItemCollection = _collection.where('userId', isEqualTo: uid);
+    Query notesItemCollection = _collection
+        .where('userId', isEqualTo: uid)
+        .orderBy('timestamp', descending: true);
 
     return notesItemCollection.snapshots();
   }
@@ -81,6 +83,7 @@ class DataService {
     QuerySnapshot snapshot = await _collection
         .where('confirmed', isEqualTo: true)
         .where('status', isEqualTo: 'Infested')
+        .orderBy('timestamp', descending: true)
         .get();
 
     snapshot.docs.forEach((DocumentSnapshot doc) {

@@ -72,34 +72,45 @@ class _ReportFormState extends State<ReportForm> {
   }
 
   Future<void> _submit() async {
-    setState(() {
-      _isLoading = true;
-    });
-    final prefs = await SharedPreferences.getInstance();
-    String? userId = await prefs.getString('userId');
-    Response result = await DataService.addReport(
-      uid: userId!,
-      pinLocation: pin!,
-      barangay: selectedItem,
-      message: _messageController.text,
-      imageList: _imageList,
-    );
-
-    if (result.code == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Report submitted!')),
+    if (pin != null) {
+      setState(() {
+        _isLoading = true;
+      });
+      final prefs = await SharedPreferences.getInstance();
+      String? userId = await prefs.getString('userId');
+      Response result = await DataService.addReport(
+        uid: userId!,
+        pinLocation: pin!,
+        barangay: selectedItem,
+        message: _messageController.text,
+        imageList: _imageList,
       );
+
+      if (result.code == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Report submitted!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(result.message.toString())),
+        );
+      }
+
+      setState(() {
+        _isLoading = false;
+        _imageList = [];
+        _messageController.text = '';
+      });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result.message.toString())),
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Please pin location'),
+          );
+        },
       );
     }
-
-    setState(() {
-      _isLoading = false;
-      _imageList = [];
-      _messageController.text = '';
-    });
   }
 
   Future<void> _pickImage(ImageSource source) async {

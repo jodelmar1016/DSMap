@@ -72,7 +72,8 @@ class _DetailsState extends State<Details> {
               'Date: ${DateFormat('MM dd, yyyy').format(widget.data['timestamp'].toDate())}',
             ),
             SizedBox(height: 10),
-            if (widget.data['confirmed'] == true)
+            if (widget.data['confirmed'] == true &&
+                widget.data['status'] == 'Infested')
               ElevatedButton(
                 onPressed: () {
                   updateStatus(context);
